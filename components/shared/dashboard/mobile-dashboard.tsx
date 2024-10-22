@@ -8,8 +8,12 @@ import { Book, Key, LogOut, Menu, Settings, User } from "lucide-react";
 import { SignOutButton, useUser } from "@clerk/nextjs";
 import { dashboardSidebar } from "@/constants";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Progress } from "@/components/ui/progress";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
 
 const MobileSidebar = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -57,9 +61,6 @@ const MobileSidebar = () => {
 			</Sheet>
 			<div className="flex-1" />
 			<div className="flex items-center justify-center gap-2">
-				<div className="flex items-center space-x-2 rounded-full px-3 py-1 border hover:bg-accent transition-all duration-300">
-					<span className="text-primary font-bold">NaN 🪙</span>
-				</div>
 				<Popover>
 					<PopoverTrigger asChild className="group">
 						<Button
@@ -80,7 +81,7 @@ const MobileSidebar = () => {
 					</PopoverTrigger>
 					<PopoverContent className="w-64 p-4 rounded-lg shadow-lg border md:mr-8 mr-6">
 						<div className="space-y-3">
-							<div className="flex items-center space-x-3 pb-3 border-b border-gray-200">
+							<div className="flex items-center space-x-3 pb-3">
 								<Avatar className="w-10 h-10">
 									<AvatarImage src={user?.user?.imageUrl} alt="User avatar" />
 									<AvatarFallback>
@@ -95,18 +96,7 @@ const MobileSidebar = () => {
 									</p>
 								</div>
 							</div>
-							<div className="mb-4 p-3 bg-muted/20 rounded-lg">
-								<div className="flex items-center justify-between mb-2">
-									<span className="text-sm font-medium">Credits Remaining</span>
-									<span className="text-sm font-semibold">
-										<span className="mr-1" role="img" aria-label="coin">
-											🪙
-										</span>
-										15
-									</span>
-								</div>
-								<Progress value={(15 / 100) * 100} className="h-2" />
-							</div>
+							<Separator />
 							<PopoverMenuItem icon={User} label="Profile" />
 							<PopoverMenuItem icon={Settings} label="Settings" />
 							<PopoverMenuItem icon={Book} label="Docs" />

@@ -7,7 +7,7 @@ interface DomainPageProps {
 	params: { domain: string };
 }
 
-interface OwnerList {
+export interface Owner {
 	id: string;
 	username: string;
 	firstName: string;
@@ -16,10 +16,9 @@ interface OwnerList {
 
 const DomainPage = async ({ params }: DomainPageProps) => {
 	const domain = params.domain.split(".")[0];
-	const OwnerId = await getUserByEmail(domain) as OwnerList;
-	console.log(OwnerId);
+	const owner = await getUserByEmail(domain) as Owner;
 
-	if (!OwnerId) {
+	if (!owner) {
 		return (
 			<main className="flex items-center justify-center h-screen">
 				<div className="text-center">
@@ -36,7 +35,15 @@ const DomainPage = async ({ params }: DomainPageProps) => {
 			</main>
 		);
 	}
-	return <div>{OwnerId.username}</div>;
+
+	return (
+		<div>
+			<h1>Welcome to {owner.username}'s Page</h1>
+			<p>
+				Owner: {owner.firstName} {owner.lastName}
+			</p>
+		</div>
+	);
 };
 
 export default DomainPage;

@@ -21,7 +21,6 @@ import Image from "next/image";
 export default function SignUpPage() {
 	const [showPassword, setShowPassword] = useState(false);
 	const [username, setUsername] = useState("");
-
 	const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		// subdomain regex
@@ -158,7 +157,7 @@ export default function SignUpPage() {
 											Your site URL will be created as
 											<br />{" "}
 											<code>
-												{username}.{process.env.NEXT_PUBLIC_ROOT_DOMAIN}
+												{username}.{process.env.NEXT_PUBLIC_APP_HOSTNAME}
 											</code>
 										</CardDescription>
 									</CardHeader>
