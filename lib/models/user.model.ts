@@ -5,9 +5,10 @@ export interface IUser extends Document {
 	username: string;
 	email: string;
 	image?: string;
+	title?: string;
 	description?: string;
 	bio?: string;
-	status: "active" | "inactive" | "busy";
+	status?: string;
 	templateTheme: string;
 	socialLinks: Record<string, string>;
 	createdAt: Date;
@@ -20,14 +21,11 @@ const UserSchema: Schema = new Schema(
 		username: { type: String, required: true, unique: true },
 		email: { type: String, required: true, unique: true },
 		image: { type: String },
+		title: { type: String },
 		description: { type: String },
 		bio: { type: String },
-		status: {
-			type: String,
-			enum: ["active", "inactive", "busy"],
-			default: "active",
-		},
-		templateTheme: { type: String, default: "default" },
+		status: { type: String },
+		templateTheme: { type: String, default: "modern" },
 		socialLinks: { type: Map, of: String },
 	},
 	{ timestamps: true }
