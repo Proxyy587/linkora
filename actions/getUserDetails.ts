@@ -1,9 +1,9 @@
 "use server";
 
 import { connectToDB } from "@/lib/db";
-import User, { IUser } from "@/lib/models/user.model";
+import User, { IUserData } from "@/lib/models/user.model";
 
-export async function getUserByEmail(email: string): Promise<Partial<IUser> | null> {
+export async function getUserByEmail(email: string): Promise<IUserData | null> {
 	try {
 		await connectToDB();
 

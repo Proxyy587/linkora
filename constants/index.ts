@@ -5,7 +5,7 @@ import {
 	Settings,
 	HelpCircle,
 	LogOut,
-    User,
+	User,
 } from "lucide-react";
 
 export const dashboardSidebar = [
@@ -14,11 +14,11 @@ export const dashboardSidebar = [
 		icon: Home,
 		href: "/dashboard",
 	},
-    {
-        label: "Socials",
-        icon: User,
-        href: "/dashboard/social-links",
-    },
+	{
+		label: "Profile",
+		icon: User,
+		href: "/dashboard/profile",
+	},
 	{
 		label: "Blog Post",
 		icon: FileText,

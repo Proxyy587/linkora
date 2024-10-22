@@ -1,9 +1,13 @@
 "use server";
 
 import { connectToDB } from "@/lib/db";
-import User, { IUser } from "@/lib/models/user.model";
+import User from "@/lib/models/user.model";
+import { IUserData } from "@/lib/models/user.model";
 
-export async function saveUserInfo(email: string, userInfo: Partial<IUser>) {
+export async function saveUserInfo(
+	email: string,
+	userInfo: Partial<IUserData>
+) {
 	try {
 		await connectToDB();
 
