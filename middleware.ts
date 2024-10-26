@@ -14,7 +14,7 @@ export default clerkMiddleware((auth, req: NextRequest) => {
 		searchParams.length > 0 ? `?${searchParams}` : ""
 	}`;
 
-	if (hostname === process.env.NEXT_PUBLIC_APP_HOSTNAME) {
+	if (hostname === `linkora.fun`) {
 		if (isProtectedRoute(req)) {
 			auth().protect();
 		}
@@ -24,18 +24,15 @@ export default clerkMiddleware((auth, req: NextRequest) => {
 		);
 	}
 
-	if (hostname === `ui.aethera.online`) {
+	if (hostname === `ui.linkora.fun`) {
 		return NextResponse.redirect("https://abhijee.com");
 	}
 
 	if (
-		hostname.endsWith(`.${process.env.NEXT_PUBLIC_APP_HOSTNAME}`) &&
-		hostname !== process.env.NEXT_PUBLIC_APP_HOSTNAME
+		hostname.endsWith(`.linkora.fun`) &&
+		hostname !== `linkora.fun`
 	) {
-		const subdomain = hostname.replace(
-			`.${process.env.NEXT_PUBLIC_APP_HOSTNAME}`,
-			""
-		);
+		const subdomain = hostname.replace(`.linkora.fun`, "");
 		return NextResponse.rewrite(new URL(`/${subdomain}${path}`, req.url));
 	}
 
