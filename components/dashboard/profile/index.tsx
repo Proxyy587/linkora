@@ -51,10 +51,37 @@ export default function EnhancedProfileAndSocials() {
 							socialLinks: userData.socialLinks || {},
 							profileImage: userData.image || user.imageUrl || "",
 						});
+					} else {
+						// If no user data is returned, create a default user info object
+						setUserInfo({
+							name: user.fullName || "",
+							username: user.username || "",
+							email: user.primaryEmailAddress.emailAddress,
+							title: "",
+							description: "",
+							status: "",
+							bio: "",
+							templateTheme: "modern",
+							socialLinks: {},
+							profileImage: user.imageUrl || "",
+						});
 					}
 				} catch (error) {
 					console.error("Error fetching user data:", error);
 					toast.error("Failed to load user data. Please try again.");
+					// Set default user info even if there's an error
+					setUserInfo({
+						name: user.fullName || "",
+						username: user.username || "",
+						email: user.primaryEmailAddress.emailAddress,
+						title: "",
+						description: "",
+						status: "",
+						bio: "",
+						templateTheme: "modern",
+						socialLinks: {},
+						profileImage: user.imageUrl || "",
+					});
 				}
 			}
 		};
