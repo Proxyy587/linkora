@@ -3,6 +3,7 @@ import mongoose, { Document, Schema } from "mongoose";
 export interface IPost {
 	title: string;
 	slug: string;
+	headerImage: string;
 	description: string;
 	content: string;
 	author: string;
@@ -16,6 +17,7 @@ const PostSchema: Schema = new Schema<IPostDocument>(
 	{
 		title: { type: String, required: true },
 		slug: { type: String, required: true, unique: true },
+		headerImage: { type: String, required: true },
 		description: { type: String, required: true },
 		content: { type: String, required: true },
 		author: { type: String, required: true },

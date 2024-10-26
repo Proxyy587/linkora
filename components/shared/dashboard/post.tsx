@@ -76,9 +76,11 @@ export default function BlogPosts() {
 											{new Date(post.updatedAt).toISOString().split("T")[0]}
 										</TableCell>
 										<TableCell className="text-right">
-											<Button variant="ghost" size="sm" className="mr-2">
-												<Pencil className="h-4 w-4 text-primary" />
-											</Button>
+											<Link href={`/dashboard/blog/update/${post.slug}`}>
+												<Button variant="ghost" size="sm" className="mr-2">
+													<Pencil className="h-4 w-4 text-primary" />
+												</Button>
+											</Link>
 											<Button
 												variant="ghost"
 												size="sm"
@@ -94,10 +96,10 @@ export default function BlogPosts() {
 									<TableCell colSpan={3} className="text-center">
 										<div className="flex flex-col items-center justify-center py-8">
 											<img
-												src="https://cdn.pixabay.com/photo/2016/11/22/23/13/black-dog-1851106_1280.jpg"
+												src="https://illustrations.popsy.co/gray/falling.svg"
 												alt="No posts found"
-												width={100}
-												height={100}
+												width={200}
+												height={200}
 												className="rounded-full aspect-square"
 											/>
 											<p className="mt-4 text-muted-foreground">

@@ -20,8 +20,8 @@ import {
 import { Trash2 } from "lucide-react";
 
 interface SocialLinksProps {
-	socialLinks: Map<string, string>;
-	onSocialLinksChange: (links: Map<string, string>) => void;
+	socialLinks: Record<string, string>;
+	onSocialLinksChange: (links: Record<string, string>) => void;
 }
 
 export default function SocialLinks({
@@ -30,7 +30,9 @@ export default function SocialLinks({
 }: SocialLinksProps) {
 	const [newPlatform, setNewPlatform] = useState("");
 	const [newUrl, setNewUrl] = useState("");
-	const [links, setLinks] = useState<Map<string, string>>(new Map());
+	const [links, setLinks] = useState<Record<string, string>>(socialLinks);
+	console.log("socialLinks", socialLinks);
+	console.log("links", links);
 
 	useEffect(() => {
 		setLinks(socialLinks);
@@ -39,8 +41,7 @@ export default function SocialLinks({
 	const handleAddLink = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (newPlatform && newUrl) {
-			const updatedLinks = new Map(links);
-			updatedLinks.set(newPlatform, newUrl);
+			const updatedLinks = { ...links, [newPlatform]: newUrl };
 			setLinks(updatedLinks);
 			onSocialLinksChange(updatedLinks);
 			setNewPlatform("");
@@ -49,8 +50,8 @@ export default function SocialLinks({
 	};
 
 	const handleRemoveLink = (platform: string) => {
-		const updatedLinks = new Map(links);
-		updatedLinks.delete(platform);
+		const updatedLinks = { ...links };
+		delete updatedLinks[platform];
 		setLinks(updatedLinks);
 		onSocialLinksChange(updatedLinks);
 	};
@@ -73,22 +74,33 @@ export default function SocialLinks({
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{Array.from(links).map(([platform, url]) => (
-							<TableRow key={platform}>
-								<TableCell className="font-medium">{platform}</TableCell>
-								<TableCell className="text-muted-foreground">{url}</TableCell>
-								<TableCell className="text-right">
-									<Button
-										variant="ghost"
-										size="sm"
-										className="hover:text-destructive"
-										onClick={() => handleRemoveLink(platform)}
-									>
-										<Trash2 className="h-4 w-4" />
-									</Button>
+						{links instanceof Map ? (
+							Array.from(links).map(([platform, url]) => (
+								<TableRow key={platform}>
+									<TableCell className="font-medium">{platform}</TableCell>
+									<TableCell className="text-muted-foreground">{url}</TableCell>
+									<TableCell className="text-right">
+										<Button
+											variant="ghost"
+											size="sm"
+											className="hover:text-destructive"
+											onClick={() => handleRemoveLink(platform)}
+										>
+											<Trash2 className="h-4 w-4" />
+										</Button>
+									</TableCell>
+								</TableRow>
+							))
+						) : (
+							<TableRow>
+								<TableCell
+									colSpan={3}
+									className="text-center text-muted-foreground"
+								>
+									No social links added yet.
 								</TableCell>
 							</TableRow>
-						))}
+						)}
 					</TableBody>
 				</Table>
 

@@ -29,25 +29,26 @@ const hljs = require("highlight.js");
 
 const extensions = [...defaultExtensions, slashCommand];
 
-const TailwindAdvancedEditor = () => {
-	const [initialContent, setInitialContent] = useState<null | JSONContent>(
-		null
-	);
+interface TailwindAdvancedEditorProps {
+	onChange?: (content: JSONContent) => void;
+	initialContent?: JSONContent;
+}
+
+const TailwindAdvancedEditor: React.FC<TailwindAdvancedEditorProps> = ({ onChange, initialContent }) => {
+	const [editorContent, setEditorContent] = useState<JSONContent | null>(null);
 	const [saveStatus, setSaveStatus] = useState("Saved");
-	const [charsCount, setCharsCount] = useState();
+	const [charsCount, setCharsCount] = useState<number | undefined>();
 
 	const [openNode, setOpenNode] = useState(false);
 	const [openColor, setOpenColor] = useState(false);
 	const [openLink, setOpenLink] = useState(false);
 	const [openAI, setOpenAI] = useState(false);
 
-	//Apply Codeblock Highlighting on the HTML from editor.getHTML()
 	const highlightCodeblocks = (content: string) => {
 		const doc = new DOMParser().parseFromString(content, "text/html");
 		doc.querySelectorAll("pre code").forEach((el) => {
-			// @ts-ignore
-			// https://highlightjs.readthedocs.io/en/latest/api.html?highlight=highlightElement#highlightelement
-			hljs.highlightElement(el);
+				// @ts-ignore
+				hljs.highlightElement(el);
 		});
 		return new XMLSerializer().serializeToString(doc);
 	};
@@ -56,27 +57,25 @@ const TailwindAdvancedEditor = () => {
 		async (editor: EditorInstance) => {
 			const json = editor.getJSON();
 			setCharsCount(editor.storage.characterCount.words());
-			window.localStorage.setItem(
-				"html-content",
-				highlightCodeblocks(editor.getHTML())
-			);
-			window.localStorage.setItem("novel-content", JSON.stringify(json));
-			window.localStorage.setItem(
-				"markdown",
-				editor.storage.markdown.getMarkdown()
-			);
+			const html = highlightCodeblocks(editor.getHTML());
 			setSaveStatus("Saved");
+			
+			// Call the onChange prop with the JSON content
+			onChange?.(json);
 		},
 		500
 	);
 
 	useEffect(() => {
-		const content = window.localStorage.getItem("novel-content");
-		if (content) setInitialContent(JSON.parse(content));
-		// else setInitialContent(defaultEditorContent);
-	}, []);
+		if (initialContent) {
+			setEditorContent(initialContent);
+		} else {
+			const content = window.localStorage.getItem("novel-content");
+			if (content) setEditorContent(JSON.parse(content));
+		}
+	}, [initialContent]);
 
-	if (!initialContent) return null;
+	if (!editorContent) return null;
 
 	return (
 		<div className="relative w-full">
@@ -96,7 +95,7 @@ const TailwindAdvancedEditor = () => {
 			</div>
 			<EditorRoot>
 				<EditorContent
-					initialContent={initialContent}
+					initialContent={editorContent}
 					extensions={extensions}
 					className="relative min-h-[500px] w-full border-muted bg-background sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:shadow-lg"
 					editorProps={{
@@ -126,7 +125,7 @@ const TailwindAdvancedEditor = () => {
 							{suggestionItems.map((item) => (
 								<EditorCommandItem
 									value={item.title}
-									onCommand={(val) => item.command(val)}
+									onCommand={(val) => item.command?.(val)}
 									className="flex w-full items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent"
 									key={item.title}
 								>

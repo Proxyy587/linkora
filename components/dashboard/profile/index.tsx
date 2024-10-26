@@ -113,7 +113,7 @@ export default function EnhancedProfileAndSocials() {
 		);
 
 	return (
-		<div className="max-w-6xl mx-auto p-8">
+		<div className="max-w-7xl mx-auto p-8">
 			<div className="flex justify-between items-center mb-8">
 				<h1 className="text-3xl font-bold text-primary">
 					Your Professional Profile
@@ -191,9 +191,12 @@ export default function EnhancedProfileAndSocials() {
 							<TabsContent value="social">
 								<SocialLinks
 									socialLinks={userInfo.socialLinks}
-									onSocialLinksChange={(links) =>
-										setUserInfo({ ...userInfo, socialLinks: links })
-									}
+									onSocialLinksChange={(updatedLinks) => {
+										setUserInfo({
+											...userInfo,
+											socialLinks: updatedLinks,
+										});
+									}}
 								/>
 							</TabsContent>
 						</div>
