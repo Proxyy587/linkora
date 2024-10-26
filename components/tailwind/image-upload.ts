@@ -14,7 +14,7 @@ const onUpload = (file: File) => {
   return new Promise((resolve, reject) => {
     toast.promise(
       promise.then(async (res) => {
-        // Successfully uploaded image
+        console.log("Upload response status:", res.status);
         if (res.status === 200) {
           const { url } = (await res.json()) as { url: string };
           // preload the image
@@ -27,8 +27,12 @@ const onUpload = (file: File) => {
           resolve(file);
           throw new Error("`BLOB_READ_WRITE_TOKEN` environment variable not found, reading image locally instead.");
         } else {
-          throw new Error("Error uploading image. Please try again.");
+          console.error("Error response:", await res.text());
+          throw new Error(`Error uploading image. Status: ${res.status}`);
         }
+      }).catch(error => {
+        console.error("Fetch error:", error);
+        throw error;
       }),
       {
         loading: "Uploading image...",

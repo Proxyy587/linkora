@@ -153,8 +153,12 @@ export default function EnhancedProfileAndSocials() {
 
 						<div className="text-center">
 							<h2 className="text-xl font-semibold">{userInfo.name}</h2>
-							<p className="text-sm text-gray-600 mt-1">@{userInfo.username}</p>
-							<p className="text-sm text-gray-600 mt-1">{userInfo.email}</p>
+							<p className="text-sm text-muted-foreground mt-1">
+								{userInfo.email}
+							</p>
+							<p className="text-sm text-muted-foreground">
+								@{userInfo.username}
+							</p>
 						</div>
 					</div>
 				</div>

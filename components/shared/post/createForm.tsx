@@ -13,8 +13,10 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { Wand2 } from "lucide-react";
+import { Wand2, Loader2 } from "lucide-react";
 import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
+import { generateWithGemini } from "@/actions/gemini";
+import { toast } from "sonner";
 
 export default function CreateForm() {
 	const [title, setTitle] = useState("");
@@ -36,13 +38,31 @@ export default function CreateForm() {
 		// Handle form submission
 	};
 
-	const generateWithAI = async (field: "title" | "description") => {
-		await new Promise((resolve) => setTimeout(resolve, 1500));
-		const generatedContent = `AI generated ${field} content.`;
-		if (field === "title") {
-			setTitle(generatedContent);
-		} else if (field === "description") {
-			setDescription(generatedContent);
+	const generateWithAI = async (
+		field: "title" | "description",
+		customPrompt: string
+	) => {
+		let prompt =
+			field === "title"
+				? `You need to generate a blog post title that is concise, engaging, and relevant to the topic. Use simple words and Avoid clickbait and ensure it accurately represents the content. Here is the user prompt: ${customPrompt}`
+				: `You need to generate a brief, engaging blog post description that summarizes the main points and entices readers to learn more. Keep it under 200 characters. Here is the user prompt: ${customPrompt}`;
+
+		try {
+			const generatedContent = await generateWithGemini(prompt);
+			if (field === "title") {
+				setTitle(generatedContent);
+			} else if (field === "description") {
+				setDescription(generatedContent);
+			}
+			return true;
+		} catch (error) {
+			console.error("Error generating content:", error);
+			toast({
+				title: "Error",
+				description: "Failed to generate content. Please try again.",
+				variant: "destructive",
+			});
+			return false;
 		}
 	};
 
@@ -76,7 +96,9 @@ export default function CreateForm() {
 								placeholder="Enter your captivating title"
 								className="flex-grow"
 							/>
-							<AIGenerateButton onClick={() => generateWithAI("title")} />
+							<AIGenerateButton
+								onGenerate={(prompt) => generateWithAI("title", prompt)}
+							/>
 						</div>
 					</div>
 					<div className="space-y-2">
@@ -104,8 +126,13 @@ export default function CreateForm() {
 								placeholder="Write a brief, engaging description"
 								className="flex-grow"
 							/>
-							<AIGenerateButton onClick={() => generateWithAI("description")} />
+							<AIGenerateButton
+								onGenerate={(prompt) => generateWithAI("description", prompt)}
+							/>
 						</div>
+						<p className="text-xs text-muted-foreground">
+							NOTE: this will be used for socials and google metadata
+						</p>
 					</div>
 					<div className="space-y-2">
 						<Label htmlFor="content">Content</Label>
@@ -117,9 +144,37 @@ export default function CreateForm() {
 	);
 }
 
-function AIGenerateButton({ onClick }: { onClick: () => void }) {
+function AIGenerateButton({
+	onGenerate,
+}: {
+	onGenerate: (prompt: string) => Promise<boolean>;
+}) {
+	const [isOpen, setIsOpen] = useState(false);
+	const [customPrompt, setCustomPrompt] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
+
+	const handleGenerate = async () => {
+		if (!customPrompt.trim()) {
+			toast({
+				title: "Error",
+				description: "Please enter a custom prompt before generating.",
+				variant: "destructive",
+			});
+			return;
+		}
+
+		setIsLoading(true);
+		const success = await onGenerate(customPrompt);
+		setIsLoading(false);
+
+		if (success) {
+			setIsOpen(false);
+			setCustomPrompt("");
+		}
+	};
+
 	return (
-		<Dialog>
+		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger asChild>
 				<Button type="button" size="icon" variant="outline">
 					<Wand2 className="h-4 w-4" />
@@ -129,14 +184,30 @@ function AIGenerateButton({ onClick }: { onClick: () => void }) {
 				<DialogHeader>
 					<DialogTitle>Generate with AI</DialogTitle>
 				</DialogHeader>
-				<div className="py-4">
+				<div className="py-4 space-y-4">
 					<p className="text-sm text-zinc-500 dark:text-zinc-400">
-						Click the button below to generate content using AI. This will
-						replace the current content in the field.
+						Enter a custom prompt to guide the AI in generating content.
 					</p>
+					<Textarea
+						value={customPrompt}
+						onChange={(e) => setCustomPrompt(e.target.value)}
+						placeholder="E.g., Generate a catchy title for a blog post about AI in healthcare"
+						className="w-full"
+					/>
 				</div>
-				<Button onClick={onClick} className="w-full">
-					Generate Content
+				<Button
+					onClick={handleGenerate}
+					className="w-full"
+					disabled={isLoading || !customPrompt.trim()}
+				>
+					{isLoading ? (
+						<>
+							<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+							Generating...
+						</>
+					) : (
+						"Generate Content"
+					)}
 				</Button>
 			</DialogContent>
 		</Dialog>

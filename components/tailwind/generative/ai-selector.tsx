@@ -15,7 +15,6 @@ import Magic from "../ui/icons/magic";
 import { ScrollArea } from "../ui/scroll-area";
 import AICompletionCommands from "./ai-completion-command";
 import AISelectorCommands from "./ai-selector-commands";
-//TODO: I think it makes more sense to create a custom Tiptap extension for this functionality https://tiptap.dev/docs/editor/ai/introduction
 
 interface AISelectorProps {
 	open: boolean;
@@ -27,7 +26,6 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
 	const [inputValue, setInputValue] = useState("");
 
 	const { completion, complete, isLoading } = useCompletion({
-		// id: "novel",
 		api: "/api/generate",
 		onResponse: (response) => {
 			if (response.status === 429) {

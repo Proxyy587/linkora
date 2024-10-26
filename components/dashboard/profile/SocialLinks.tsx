@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Card,
 	CardContent,
@@ -20,8 +20,8 @@ import {
 import { Trash2 } from "lucide-react";
 
 interface SocialLinksProps {
-	socialLinks: Record<string, string>;
-	onSocialLinksChange: (links: Record<string, string>) => void;
+	socialLinks: Map<string, string>;
+	onSocialLinksChange: (links: Map<string, string>) => void;
 }
 
 export default function SocialLinks({
@@ -30,11 +30,18 @@ export default function SocialLinks({
 }: SocialLinksProps) {
 	const [newPlatform, setNewPlatform] = useState("");
 	const [newUrl, setNewUrl] = useState("");
+	const [links, setLinks] = useState<Map<string, string>>(new Map());
+
+	useEffect(() => {
+		setLinks(socialLinks);
+	}, [socialLinks]);
 
 	const handleAddLink = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (newPlatform && newUrl) {
-			const updatedLinks = { ...socialLinks, [newPlatform]: newUrl };
+			const updatedLinks = new Map(links);
+			updatedLinks.set(newPlatform, newUrl);
+			setLinks(updatedLinks);
 			onSocialLinksChange(updatedLinks);
 			setNewPlatform("");
 			setNewUrl("");
@@ -42,8 +49,9 @@ export default function SocialLinks({
 	};
 
 	const handleRemoveLink = (platform: string) => {
-		const updatedLinks = { ...socialLinks };
-		delete updatedLinks[platform];
+		const updatedLinks = new Map(links);
+		updatedLinks.delete(platform);
+		setLinks(updatedLinks);
 		onSocialLinksChange(updatedLinks);
 	};
 
@@ -65,7 +73,7 @@ export default function SocialLinks({
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{Object.entries(socialLinks).map(([platform, url]) => (
+						{Array.from(links).map(([platform, url]) => (
 							<TableRow key={platform}>
 								<TableCell className="font-medium">{platform}</TableCell>
 								<TableCell className="text-muted-foreground">{url}</TableCell>

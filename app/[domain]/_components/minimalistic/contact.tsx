@@ -1,16 +1,28 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 
 const Contact = ({ email }: { email: string }) => {
+	const [name, setName] = useState("");
+	const [message, setMessage] = useState("");
+
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		console.log(name, message);
+	};
+
 	return (
 		<div className="mt-3 md:mt-0 w-full h-64 rounded-lg bg-[#f7f2f2] dark:bg-[#191919] px-2">
 			<p className="px-2 py-1 font-semibold text-md pt-2">Drop a message</p>
 
 			<div className="mt-1">
-				<form className="px-1">
+				<form className="px-1" onSubmit={handleSubmit}>
 					<div className="space-y-2 w-full">
 						<input
 							className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 							placeholder={email}
+							value={name}
+							onChange={(e) => setName(e.target.value)}
 							id="email-input"
 							aria-describedby="email-input-description"
 							aria-invalid="false"
@@ -27,6 +39,8 @@ const Contact = ({ email }: { email: string }) => {
 								id="message-input"
 								aria-describedby="message-input-description"
 								aria-invalid="false"
+								value={message}
+								onChange={(e) => setMessage(e.target.value)}
 							></textarea>
 						</div>
 					</div>

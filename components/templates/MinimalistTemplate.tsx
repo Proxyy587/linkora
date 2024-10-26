@@ -16,16 +16,12 @@ import {
 	FaWhatsapp,
 	FaYoutube,
 } from "react-icons/fa";
-import {
-	AiFillGithub,
-	AiFillTwitterCircle,
-	AiFillLinkedin,
-} from "react-icons/ai";
+import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
+import { FaXTwitter } from "react-icons/fa6";
+import { InstagramLogoIcon } from "@radix-ui/react-icons";
 import { Navbar } from "@/app/[domain]/_components/minimalistic/nav";
 import Footer from "@/app/[domain]/_components/minimalistic/footer";
 import Contact from "@/app/[domain]/_components/minimalistic/contact";
-import { InstagramLogoIcon } from "@radix-ui/react-icons";
-import { FaXTwitter } from "react-icons/fa6";
 import { platformIcons } from "@/constants";
 
 interface MinimalistTemplateProps {
@@ -33,7 +29,13 @@ interface MinimalistTemplateProps {
 }
 
 const MinimalistTemplate: React.FC<MinimalistTemplateProps> = ({ user }) => {
-	const socials = user.socialLinks;
+	// Ensure 'socials' is an object by converting the Map if needed
+	const socials =
+		user.socialLinks instanceof Map
+			? Object.fromEntries(user.socialLinks)
+			: user.socialLinks;
+
+	console.log(`socials: ${JSON.stringify(socials)}`);
 
 	return (
 		<div className="max-w-2xl mx-auto px-4 py-8">
@@ -63,7 +65,7 @@ const MinimalistTemplate: React.FC<MinimalistTemplateProps> = ({ user }) => {
 							{Object.entries(socials).map(([platform, url]) => (
 								<li key={platform}>
 									<a
-										href={url}
+										href={url as string}
 										target="_blank"
 										rel="noopener noreferrer"
 										className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
