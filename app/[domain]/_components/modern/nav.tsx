@@ -3,7 +3,7 @@ import Link from "next/link";
 const navItems = {
 	"/": { name: "Home" },
 	"/projects": { name: "Projects" },
-	"https://github.com": { name: "GitHub" },
+	"/contact": { name: "Contact" },
 };
 
 export function Navbar() {

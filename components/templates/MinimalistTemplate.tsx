@@ -23,6 +23,7 @@ import { Navbar } from "@/app/[domain]/_components/minimalistic/nav";
 import Footer from "@/app/[domain]/_components/minimalistic/footer";
 import Contact from "@/app/[domain]/_components/minimalistic/contact";
 import { platformIcons } from "@/constants";
+import { BlogPosts } from "@/app/[domain]/_components/blogs/BlogPost";
 
 interface MinimalistTemplateProps {
 	user: IUserData;
@@ -57,6 +58,9 @@ const MinimalistTemplate: React.FC<MinimalistTemplateProps> = ({ user }) => {
 				<section>
 					<p className="text-gray-700 dark:text-gray-300">{user.bio}</p>
 					<p className="text-gray-700 dark:text-gray-300">{user.description}</p>
+				</section>
+				<section className="my-8">
+					<BlogPosts username={user.username} limit={3} />
 				</section>
 				{socials && Object.keys(socials).length > 0 && (
 					<section>
