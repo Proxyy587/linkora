@@ -14,7 +14,7 @@ const Landing = () => {
 					<p className="p-regular-12 wrapper text-muted-foreground max-w-lg">
 						Your all-in-one platform for personal branding and content sharing{" "}
 						<br />
-						More than just links. It's your digital identity
+						More than just links. It&apos;s your digital identity
 					</p>
 				</header>
 
