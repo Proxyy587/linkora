@@ -29,6 +29,6 @@ export async function POST(req: Request) {
     return NextResponse.json(blob);
   } catch (error) {
     console.error("Error in upload API route:", error);
-    return new Response(`Error uploading file: ${error.message}`, { status: 500 });
+    return new Response(`Error uploading file: ${error}`, { status: 500 });
   }
 }
