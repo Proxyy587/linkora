@@ -25,6 +25,7 @@ export async function getUserByEmail(
 		let user = await User.findOne({ username: clerkUser.username });
 
 		if (!user) {
+			console.log(`User with username ${username} not found in MongoDB`);
 			return null;
 		}
 

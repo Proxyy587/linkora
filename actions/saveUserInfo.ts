@@ -34,7 +34,6 @@ export async function saveUserInfo(
 		}
 
 		console.log("User info saved successfully");
-		// Convert Mongoose document to a plain JavaScript object
 		return updatedUser.toObject();
 	} catch (error) {
 		console.error("Error saving user info to database:", error);

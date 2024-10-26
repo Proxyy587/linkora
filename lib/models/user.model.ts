@@ -10,12 +10,14 @@ export interface IUserData {
 	bio?: string;
 	status?: string;
 	templateTheme: string;
-	socialLinks: Record<string, string>;
+	socialLinks?: {
+		[key: string]: string;
+	};
 }
 
 export interface IUserDocument extends IUserData, Document {}
 
-const UserSchema: Schema = new Schema<IUserData>(
+const UserSchema: Schema = new Schema<IUserDocument>(
 	{
 		name: { type: String, required: true },
 		username: { type: String, required: true, unique: true },

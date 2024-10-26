@@ -3,16 +3,15 @@
 import React, { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
-import { getUserByEmail } from "@/actions/getUserDetails";
+import { getUserAndSaveEmail } from "@/actions/getUserDetails";
 import { saveUserInfo } from "@/actions/saveUserInfo";
 import { toast } from "sonner";
 import TemplateSelection from "./TemplateSelection";
 import SocialLinks from "./SocialLinks";
 import ProfileForm from "./ProfileForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 export interface UserInfo {
 	name: string;
@@ -28,7 +27,7 @@ export interface UserInfo {
 }
 
 export default function EnhancedProfileAndSocials() {
-	const { user } = useUser();
+	const { user, isLoaded } = useUser();
 	const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 	const [isSaving, setIsSaving] = useState(false);
 
@@ -36,7 +35,7 @@ export default function EnhancedProfileAndSocials() {
 		const fetchUserData = async () => {
 			if (user?.primaryEmailAddress?.emailAddress) {
 				try {
-					const userData = await getUserByEmail(
+					const userData = await getUserAndSaveEmail(
 						user.primaryEmailAddress.emailAddress
 					);
 					if (userData) {
@@ -59,14 +58,26 @@ export default function EnhancedProfileAndSocials() {
 				}
 			}
 		};
-		fetchUserData();
-	}, [user]);
+		if (isLoaded) {
+			fetchUserData();
+		}
+	}, [user, isLoaded]);
 
 	const handleSave = async () => {
 		if (user && userInfo) {
 			setIsSaving(true);
 			try {
-				await saveUserInfo(user.primaryEmailAddress?.emailAddress || '', userInfo);
+				await saveUserInfo(
+					user.primaryEmailAddress?.emailAddress || "",
+					userInfo
+				);
+
+				// Name update in Clerk is not needed as it doesn't change
+				// Removed the code that attempted to update the name in Clerk
+				if (user.username !== userInfo.username) {
+					await user.update({ username: userInfo.username });
+				}
+
 				toast.success("Changes saved successfully");
 			} catch (error) {
 				console.error("Error saving user info:", error);
@@ -84,6 +95,10 @@ export default function EnhancedProfileAndSocials() {
 		if (file && user) {
 			try {
 				await user.setProfileImage({ file });
+				const imageUrl = await user.imageUrl;
+				setUserInfo((prevInfo) =>
+					prevInfo ? { ...prevInfo, profileImage: imageUrl } : null
+				);
 				toast.success("Profile picture updated successfully");
 			} catch (error) {
 				console.error("Error updating profile image:", error);
@@ -95,7 +110,7 @@ export default function EnhancedProfileAndSocials() {
 	if (!userInfo)
 		return (
 			<div className="flex justify-center items-center h-screen">
-				Loading...
+				<div className="space-y-4">Loading...</div>
 			</div>
 		);
 

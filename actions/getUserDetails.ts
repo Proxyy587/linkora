@@ -3,7 +3,7 @@
 import { connectToDB } from "@/lib/db";
 import User, { IUserData } from "@/lib/models/user.model";
 
-export async function getUserByEmail(email: string): Promise<IUserData | null> {
+export async function getUserAndSaveEmail(email: string): Promise<IUserData | null> {
 	try {
 		await connectToDB();
 

@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import {
 	Card,
@@ -35,7 +34,8 @@ export default function SocialLinks({
 	const handleAddLink = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (newPlatform && newUrl) {
-			onSocialLinksChange({ ...socialLinks, [newPlatform]: newUrl });
+			const updatedLinks = { ...socialLinks, [newPlatform]: newUrl };
+			onSocialLinksChange(updatedLinks);
 			setNewPlatform("");
 			setNewUrl("");
 		}

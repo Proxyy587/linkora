@@ -10,6 +10,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { UserInfo } from "./index";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface ProfileFormProps {
 	userInfo: UserInfo;
@@ -65,7 +74,26 @@ export default function ProfileForm({
 								onChange={handleChange}
 								className="bg-popover focus:ring-2 focus:ring-primary transition-all duration-300"
 							/>
+							<p className="text-xs text-muted-foreground">
+								This will be used in your profile URL.
+							</p>
 						</div>
+					</div>
+					<div className="space-y-2">
+						<Label htmlFor="status" className="text-primary">
+							Current Status
+						</Label>
+						<Input
+							id="status"
+							name="status"
+							placeholder="e.g. Available for freelance work"
+							value={userInfo.status || ""}
+							onChange={handleChange}
+							className="bg-popover focus:ring-2 focus:ring-primary transition-all duration-300"
+						/>
+						<p className="text-xs text-muted-foreground">
+							This will appear below your name on your profile.
+						</p>
 					</div>
 					<div className="space-y-2">
 						<Label htmlFor="title" className="text-primary">
@@ -91,22 +119,13 @@ export default function ProfileForm({
 							value={userInfo.description || ""}
 							onChange={handleChange}
 							className="bg-popover focus:ring-2 focus:ring-primary transition-all duration-300"
-							rows={3}
+							rows={2}
 						/>
+						<p className="text-xs text-muted-foreground">
+							This will appear at the top of your profile. Keep it concise.
+						</p>
 					</div>
-					<div className="space-y-2">
-						<Label htmlFor="status" className="text-primary">
-							Current Status
-						</Label>
-						<Input
-							id="status"
-							name="status"
-							placeholder="e.g. Available for freelance work"
-							value={userInfo.status || ""}
-							onChange={handleChange}
-							className="bg-popover focus:ring-2 focus:ring-primary transition-all duration-300"
-						/>
-					</div>
+
 					<div className="space-y-2">
 						<Label htmlFor="bio" className="text-primary">
 							Detailed Bio
@@ -118,8 +137,50 @@ export default function ProfileForm({
 							value={userInfo.bio || ""}
 							onChange={handleChange}
 							className="bg-popover focus:ring-2 focus:ring-primary transition-all duration-300"
-							rows={5}
+							rows={7}
 						/>
+						<div className="flex items-center space-x-2">
+							<p className="text-xs text-muted-foreground">
+								You can use{" "}
+								<Dialog>
+									<DialogTrigger asChild>Markdown Guide</DialogTrigger>
+									<DialogContent>
+										<DialogHeader>
+											<DialogTitle>Markdown Guide</DialogTitle>
+											<DialogDescription>
+												Here are some basic Markdown formatting options:
+											</DialogDescription>
+										</DialogHeader>
+										<div className="space-y-2">
+											<p>
+												<strong># Header 1</strong> - Large Header
+											</p>
+											<p>
+												<strong>## Header 2</strong> - Medium Header
+											</p>
+											<p>
+												<strong>**Bold Text**</strong> -{" "}
+												<strong>Bold Text</strong>
+											</p>
+											<p>
+												<strong>*Italic Text*</strong> - <em>Italic Text</em>
+											</p>
+											<p>
+												<strong>[Link](https://example.com)</strong> -{" "}
+												<a href="https://example.com">Link</a>
+											</p>
+											<p>
+												<strong>- List Item</strong> - Bulleted List
+											</p>
+											<p>
+												<strong>1. Numbered Item</strong> - Numbered List
+											</p>
+										</div>
+									</DialogContent>
+								</Dialog>{" "}
+								to format your bio.
+							</p>
+						</div>
 					</div>
 				</div>
 			</CardContent>
