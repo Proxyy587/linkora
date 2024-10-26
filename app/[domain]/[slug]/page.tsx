@@ -32,7 +32,7 @@ const DomainSlug = async ({
 					<Navbar />
 					<section className="flex flex-col gap-4">
 						<h1 className="font-semibold text-2xl mb-8 tracking-tighter">
-							{owner.username}'s Blog
+							{owner.username}&apos;s Blog
 						</h1>
 						<BlogPosts username={owner.username} />
 					</section>
