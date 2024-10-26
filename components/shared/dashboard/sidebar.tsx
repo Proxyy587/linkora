@@ -4,7 +4,6 @@ import Link from "next/link";
 import React from "react";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { dashboardSidebar } from "@/constants";
 import {
 	Popover,
 	PopoverContent,
@@ -12,6 +11,7 @@ import {
 } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUser } from "@clerk/nextjs";
+import { dashboardSidebar } from "@/constants";
 
 const Sidebar = () => {
 	const { user } = useUser();

@@ -1,6 +1,21 @@
 import React from "react";
 import { IUserData } from "@/lib/models/user.model";
-import { FaLink } from "react-icons/fa";
+import {
+	FaBehance,
+	FaDiscord,
+	FaDribbble,
+	FaFacebook,
+	FaLink,
+	FaMedium,
+	FaPinterest,
+	FaReddit,
+	FaSnapchat,
+	FaTelegram,
+	FaTiktok,
+	FaTwitch,
+	FaWhatsapp,
+	FaYoutube,
+} from "react-icons/fa";
 import {
 	AiFillGithub,
 	AiFillTwitterCircle,
@@ -11,6 +26,7 @@ import Footer from "@/app/[domain]/_components/minimalistic/footer";
 import Contact from "@/app/[domain]/_components/minimalistic/contact";
 import { InstagramLogoIcon } from "@radix-ui/react-icons";
 import { FaXTwitter } from "react-icons/fa6";
+import { platformIcons } from "@/constants";
 
 interface MinimalistTemplateProps {
 	user: IUserData;
@@ -18,14 +34,6 @@ interface MinimalistTemplateProps {
 
 const MinimalistTemplate: React.FC<MinimalistTemplateProps> = ({ user }) => {
 	const socials = user.socialLinks;
-
-	const platformIcons: { [key: string]: React.ReactNode } = {
-		github: <AiFillGithub size={24} />,
-		twitter: <FaXTwitter size={24} />,
-		instagram: <InstagramLogoIcon width={24} height={24} />,
-		linkedin: <AiFillLinkedin size={24} />,
-		default: <FaLink size={24} />,
-	};
 
 	return (
 		<div className="max-w-2xl mx-auto px-4 py-8">

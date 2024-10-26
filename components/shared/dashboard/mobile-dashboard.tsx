@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Book, Key, LogOut, Menu, Settings, User } from "lucide-react";
 import { SignOutButton, useUser } from "@clerk/nextjs";
-import { dashboardSidebar } from "@/constants";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	Popover,
@@ -14,6 +13,7 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
+import { dashboardSidebar } from "@/constants";
 
 const MobileSidebar = () => {
 	const [isOpen, setIsOpen] = useState(false);
