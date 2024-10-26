@@ -1,5 +1,3 @@
-"use client";
-
 import { Command, CommandInput } from "@/components/tailwind/ui/command";
 
 import { useCompletion } from "ai/react";
@@ -73,7 +71,7 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
 									? "Tell AI what to do next"
 									: "Ask AI to edit or generate..."
 							}
-							onFocus={() => addAIHighlight(editor)}
+							onFocus={() => editor && addAIHighlight(editor)}
 						/>
 						<Button
 							size="icon"
@@ -84,14 +82,16 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
 										body: { option: "zap", command: inputValue },
 									}).then(() => setInputValue(""));
 
-								const slice = editor.state.selection.content();
-								const text = editor.storage.markdown.serializer.serialize(
-									slice.content
-								);
+								if (editor) {
+									const slice = editor.state.selection.content();
+									const text = editor.storage.markdown.serializer.serialize(
+										slice.content
+									);
 
-								complete(text, {
-									body: { option: "zap", command: inputValue },
-								}).then(() => setInputValue(""));
+									complete(text, {
+										body: { option: "zap", command: inputValue },
+									}).then(() => setInputValue(""));
+								}
 							}}
 						>
 							<ArrowUp className="h-4 w-4" />
@@ -100,7 +100,9 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
 					{hasCompletion ? (
 						<AICompletionCommands
 							onDiscard={() => {
-								editor.chain().unsetHighlight().focus().run();
+								if (editor) {
+									editor.chain().unsetHighlight().focus().run();
+								}
 								onOpenChange(false);
 							}}
 							completion={completion}

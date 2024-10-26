@@ -11,7 +11,7 @@ import {
   TextIcon,
   TextQuote,
 } from "lucide-react";
-import { EditorBubbleItem, useEditor } from "novel";
+import { EditorBubbleItem, useEditor, type EditorInstance } from "novel";
 
 import { Button } from "@/components/tailwind/ui/button";
 import { PopoverContent, PopoverTrigger } from "@/components/tailwind/ui/popover";
@@ -20,8 +20,8 @@ import { Popover } from "@radix-ui/react-popover";
 export type SelectorItem = {
   name: string;
   icon: LucideIcon;
-  command: (editor: ReturnType<typeof useEditor>["editor"]) => void;
-  isActive: (editor: ReturnType<typeof useEditor>["editor"]) => boolean;
+  command: (editor: EditorInstance) => void;
+  isActive: (editor: EditorInstance) => boolean;
 };
 
 const items: SelectorItem[] = [
@@ -106,9 +106,11 @@ export const NodeSelector = ({ open, onOpenChange }: NodeSelectorProps) => {
         {items.map((item) => (
           <EditorBubbleItem
             key={item.name}
-            onSelect={(editor) => {
-              item.command(editor);
-              onOpenChange(false);
+            onSelect={() => {
+              if (editor) {
+                item.command(editor);
+                onOpenChange(false);
+              }
             }}
             className="flex cursor-pointer items-center justify-between rounded-sm px-2 py-1 text-sm hover:bg-accent"
           >

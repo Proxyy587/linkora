@@ -2,20 +2,20 @@ import Link from "next/link";
 
 const navItems = {
 	"/": { name: "Home" },
-	"/blog": { name: "Blog" },
-	"https://vercel.com/templates/next.js/portfolio-starter-kit": {
-		name: "Source",
-	},
+	"/projects": { name: "Projects" },
+	"https://github.com": { name: "GitHub" },
 };
 
 export function Navbar() {
 	return (
-		<nav className="py-4 px-8 shadow-md bg-white text-gray-700 font-serif">
+		<nav className="py-4 px-8 bg-gray-900 text-gray-100">
 			<ul className="flex space-x-6">
 				{Object.entries(navItems).map(([path, { name }]) => (
 					<li key={path}>
-						<Link href={path} legacyBehavior>
-							<p className="hover:text-gray-900">{name}</p>
+						<Link href={path}>
+							<a className="hover:text-primary transition-colors duration-200">
+								{name}
+							</a>
 						</Link>
 					</li>
 				))}
