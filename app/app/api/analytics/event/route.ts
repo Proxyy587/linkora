@@ -3,8 +3,12 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 
-const uri = process.env.MONGODB_URI as string;
-const client = new MongoClient(uri);
+if (!process.env.DATABASE_URL) {
+	throw new Error("MONGODB_URI environment variable is not defined");
+}
+
+const uri = process.env.DATABASE_URL;
+let client: MongoClient | null = null;
 
 const corsHeaders = {
 	"Access-Control-Allow-Origin": "*",
@@ -43,6 +47,7 @@ export async function POST(req: Request): Promise<NextResponse> {
 			);
 		}
 
+		client = new MongoClient(uri);
 		await client.connect();
 		const db = client.db("analytics");
 		const events = db.collection("events");
@@ -69,7 +74,9 @@ export async function POST(req: Request): Promise<NextResponse> {
 			{ status: 200, headers: corsHeaders }
 		);
 	} catch (error) {
-		await client.close();
+		if (client) {
+			await client.close();
+		}
 		return NextResponse.json(
 			{
 				error: error instanceof Error ? error.message : "Internal server error",
