@@ -1,5 +1,6 @@
 import { connectToDB } from "@/lib/db";
 import { Analytics } from "@/lib/models/analytics.model";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
 	try {
@@ -20,11 +21,11 @@ export async function POST(req: Request) {
 		});
 
 		await analyticsData.save();
-		return new Response(JSON.stringify({ success: true }), { status: 201 });
+		return NextResponse.json({ success: true }, { status: 201 });
 	} catch (error) {
 		console.error("Error saving analytics:", error);
-		return new Response(
-			JSON.stringify({ success: false, error: "Failed to save analytics" }),
+		return NextResponse.json(
+			{ success: false, error: "Failed to save analytics" },
 			{ status: 500 }
 		);
 	}

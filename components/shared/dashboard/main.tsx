@@ -165,7 +165,7 @@ export default function DashboardMain() {
           <div className="grid grid-cols-1 lg:grid-cols-2 mt-12 w-full border-y border-white/5 bg-black">
             <div className="flex flex-col bg-black z-40 h-full w-full">
               <h1 className="label">Top Pages</h1>
-              {analytics.pageViews.map((view) => (
+              {analytics.pageViews?.map((view) => (
                 <div key={view._id} className="text-white w-full items-center justify-between px-6 py-4 border-b border-white/5 flex">
                   <p className="text-white/70 font-light">/{view._id}</p>
                   <p>{abbreviateNumber(view.views)}</p>
