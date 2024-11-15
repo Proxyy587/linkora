@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 const uri = process.env.MONGODB_URI as string;
 const client = new MongoClient(uri);
 
-export const corsHeaders = {
+const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
