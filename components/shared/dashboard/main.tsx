@@ -4,13 +4,20 @@ import React, { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowBigDown } from "lucide-react";
+import { RefreshCcw } from "lucide-react";
 
 interface Analytics {
   totalViews: number;
@@ -18,6 +25,12 @@ interface Analytics {
   uniqueVisitors: number;
   countries: Array<{ _id: string; count: number }>;
   pageViews: Array<{ _id: string; views: number }>;
+  customEvents: Array<{
+    event_name: string;
+    message: string;
+    timestamp: string;
+  }>;
+  sources: Array<{ source: string; count: number }>;
 }
 
 export default function DashboardMain() {
@@ -26,6 +39,7 @@ export default function DashboardMain() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filterValue, setFilterValue] = useState(0);
+  const [activeCustomEventTab, setActiveCustomEventTab] = useState("");
 
   const fetchAnalytics = async (filter_duration?: string) => {
     if (!user?.username) return;
@@ -88,6 +102,11 @@ export default function DashboardMain() {
     }
   };
 
+  const formatTimeStamp = (date: string) => {
+    const timestamp = new Date(date);
+    return timestamp.toLocaleString();
+  };
+
   return (
     <div className="space-y-8">
       <div className="w-full flex justify-end px-12 space-x-5">
@@ -106,10 +125,11 @@ export default function DashboardMain() {
             <SelectItem value="30">Last 30 days</SelectItem>
             <SelectItem value="60">Last 60 days</SelectItem>
             <SelectItem value="90">Last 90 days</SelectItem>
+            <SelectItem value="180">Last 180 days</SelectItem>
           </SelectContent>
         </Select>
 
-        <ArrowBigDown
+        <RefreshCcw
           onClick={() => fetchAnalytics()}
           className="h-4 w-4 stroke-white/60 hover:stroke-white smooth cursor-pointer"
         />
@@ -118,62 +138,89 @@ export default function DashboardMain() {
       <Tabs defaultValue="general" className="w-full">
         <TabsList className="mb-4">
           <TabsTrigger value="general">General</TabsTrigger>
-          <TabsTrigger value="details">Details</TabsTrigger>
+          <TabsTrigger value="customEvents">Custom Events</TabsTrigger>
         </TabsList>
 
         <TabsContent value="general">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-lg shadow bg-black border border-white/5">
-              <div className="flex items-center gap-4">
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500">Total Views</h3>
-                  <p className="text-2xl font-bold text-white">
-                    {abbreviateNumber(analytics.totalViews)}
-                  </p>
-                </div>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-4">
+            <div className="bg-black border-white/5 border text-white text-center">
+              <p className="text-white/70 font-medium py-8 w-full text-center border-b border-white/5">
+                TOTAL VISITS
+              </p>
+              <p className="py-12 text-3xl lg:text-4xl font-bold bg-[#050505]">
+                {abbreviateNumber(analytics.uniqueVisitors)}
+              </p>
             </div>
 
-            <div className="p-6 rounded-lg shadow bg-black border border-white/5">
-              <div className="flex items-center gap-4">
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500">Unique Visitors</h3>
-                  <p className="text-2xl font-bold text-white">
-                    {abbreviateNumber(analytics.uniqueVisitors)}
-                  </p>
+            <div className="bg-black border-white/5 border text-white text-center">
+              <p className="font-medium text-white/70 py-8 w-full text-center border-b border-white/5">
+                PAGE VIEWS
+              </p>
+              <p className="py-12 text-3xl lg:text-4xl font-bold bg-[#050505]">
+                {abbreviateNumber(analytics.totalViews)}
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 mt-12 w-full border-y border-white/5 bg-black">
+            <div className="flex flex-col bg-black z-40 h-full w-full">
+              <h1 className="label">Top Pages</h1>
+              {analytics.pageViews.map((view) => (
+                <div key={view._id} className="text-white w-full items-center justify-between px-6 py-4 border-b border-white/5 flex">
+                  <p className="text-white/70 font-light">/{view._id}</p>
+                  <p>{abbreviateNumber(view.views)}</p>
                 </div>
-              </div>
+              ))}
             </div>
 
-            <div className="p-6 rounded-lg shadow bg-black border border-white/5">
-              <div className="flex items-center gap-4">
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500">Top Countries</h3>
-                  <ul className="mt-2 space-y-1 text-white">
-                    {analytics.countries.map((country) => (
-                      <li key={country._id}>
-                        {country._id}: {abbreviateNumber(country.count)}
-                      </li>
-                    ))}
-                  </ul>
+            <div className="flex flex-col bg-black z-40 h-full w-full lg:border-l border-t lg:border-t-0 border-white/5">
+              <h1 className="label relative">
+                Top Visit Sources
+                <p className="absolute bottom-2 right-2 text-[10px] italic font-light">
+                  add ?utm={"{source}"} to track
+                </p>
+              </h1>
+              {analytics.sources?.map((source) => (
+                <div key={source.source} className="text-white w-full items-center justify-between px-6 py-4 border-b border-white/5 flex">
+                  <p className="text-white/70 font-light">/{source.source}</p>
+                  <p>{abbreviateNumber(source.count)}</p>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </TabsContent>
 
-        <TabsContent value="details">
-          <div className="p-6 rounded-lg shadow bg-black border border-white/5">
-            <h3 className="text-lg font-medium text-white mb-4">Page Views</h3>
-            <ul className="space-y-2">
-              {analytics.pageViews?.map((page) => (
-                <li key={page._id} className="flex justify-between text-white">
-                  <span>{page._id}</span>
-                  <span>{abbreviateNumber(page.views)}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <TabsContent value="customEvents">
+          {analytics.customEvents && (
+            <Carousel className="w-full px-4">
+              <CarouselContent>
+                {analytics.customEvents.map((event) => (
+                  <CarouselItem key={event.event_name} className="basis-1/2">
+                    <div 
+                      className={`bg-black smooth group hover:border-white/10 text-white text-center border ${
+                        activeCustomEventTab === event.event_name ? "border-white/10" : "border-white/5 cursor-pointer"
+                      }`}
+                      onClick={() => setActiveCustomEventTab(event.event_name)}
+                    >
+                      <p className={`text-white/70 font-medium py-8 w-full group-hover:border-white/10 smooth text-center border-b ${
+                        activeCustomEventTab === event.event_name ? "border-white/10" : "border-white/5"
+                      }`}>
+                        {event.event_name}
+                      </p>
+                      <p className="py-12 text-3xl lg:text-4xl font-bold bg-[#050505]">
+                        {event.message}
+                      </p>
+                      <p className="italic text-xs text-white/50">
+                        {formatTimeStamp(event.timestamp)}
+                      </p>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          )}
         </TabsContent>
       </Tabs>
     </div>
