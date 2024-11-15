@@ -4,6 +4,7 @@ import MinimalistTemplate from "@/components/templates/MinimalistTemplate";
 import ModernTemplate from "@/components/templates/ModernTemplate";
 import { notFound } from "next/navigation";
 import { IUserData } from "@/lib/models/user.model";
+import Script from "next/script";
 
 interface DomainPageProps {
 	params: { domain: string };
@@ -44,5 +45,15 @@ export default async function DomainPage({ params }: DomainPageProps) {
 		}
 	};
 
-	return <>{renderTemplate()}</>;
+	return (
+		<>
+			{renderTemplate()}
+			<Script
+				id="analytics-script"
+				strategy="afterInteractive"
+				src="/tracking-script.js"
+				data-domain={params.domain}
+			/>
+		</>
+	);
 }
