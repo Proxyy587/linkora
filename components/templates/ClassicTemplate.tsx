@@ -67,7 +67,7 @@ const ClassicTemplate: React.FC<ClassicTemplateProps> = ({ user }) => {
 				)}
 				<section>
 					<h2 className="text-2xl font-semibold mb-2">Contact Me</h2>
-					<Contact email={user.email} />
+					{user.contact && <Contact email={user.contact.email} />}
 				</section>
 			</main>
 			<Footer />

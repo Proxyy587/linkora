@@ -30,7 +30,11 @@ export default function SocialLinks({
 }: SocialLinksProps) {
 	const [newPlatform, setNewPlatform] = useState("");
 	const [newUrl, setNewUrl] = useState("");
-	const [links, setLinks] = useState<Record<string, string>>(socialLinks || {});
+	const [links, setLinks] = useState<Record<string, string>>(
+		socialLinks || {}
+	);
+
+	
 
 	useEffect(() => {
 		setLinks(socialLinks || {});
@@ -39,7 +43,7 @@ export default function SocialLinks({
 	const handleAddLink = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (newPlatform && newUrl) {
-			const updatedLinks = { ...links, [newPlatform]: newUrl };
+			const updatedLinks = { ...links, [newPlatform.toLowerCase()]: newUrl };
 			setLinks(updatedLinks);
 			onSocialLinksChange(updatedLinks);
 			setNewPlatform("");
@@ -72,11 +76,22 @@ export default function SocialLinks({
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{Object.keys(links).length > 0 ? (
+						{Object.entries(links).length > 0 ? (
 							Object.entries(links).map(([platform, url]) => (
 								<TableRow key={platform}>
-									<TableCell className="font-medium">{platform}</TableCell>
-									<TableCell className="text-muted-foreground">{url}</TableCell>
+									<TableCell className="font-medium capitalize">
+										{platform}
+									</TableCell>
+									<TableCell className="text-muted-foreground">
+										<a
+											href={url}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="hover:underline"
+										>
+											{url}
+										</a>
+									</TableCell>
 									<TableCell className="text-right">
 										<Button
 											variant="ghost"

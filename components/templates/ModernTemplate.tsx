@@ -1,24 +1,5 @@
 import React from "react";
 import { IUserData } from "@/lib/models/user.model";
-import {
-	FaBehance,
-	FaDiscord,
-	FaDribbble,
-	FaFacebook,
-	FaLink,
-	FaMedium,
-	FaPinterest,
-	FaReddit,
-	FaSnapchat,
-	FaTelegram,
-	FaTiktok,
-	FaTwitch,
-	FaWhatsapp,
-	FaYoutube,
-} from "react-icons/fa";
-import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
-import { FaXTwitter } from "react-icons/fa6";
-import { InstagramLogoIcon } from "@radix-ui/react-icons";
 import Navbar from "@/app/[domain]/_components/modern/nav";
 import Footer from "@/app/[domain]/_components/modern/footer";
 import { platformIcons } from "@/constants";
@@ -70,7 +51,7 @@ const ModernTemplate: React.FC<ModernTemplateProps> = ({ user }) => {
 				)}
 				<section>
 					<h2 className="text-3xl font-semibold text-primary mb-3">Contact</h2>
-					<Contact email={user.email} />
+					{user.contact && <Contact email={user.contact.email} />}
 				</section>
 			</main>
 			<Footer />
