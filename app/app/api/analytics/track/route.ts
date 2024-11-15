@@ -1,7 +1,11 @@
 import { MongoClient } from "mongodb";
 import { NextResponse } from "next/server";
 
-const uri = process.env.MONGODB_URI as string;
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL environment variable is not defined");
+}
+
+const uri = process.env.DATABASE_URL as string;
 const client = new MongoClient(uri);
 
 const corsHeaders = {
