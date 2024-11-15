@@ -30,7 +30,7 @@
 	const params = new URLSearchParams(queryString);
 	var source = params.get("utm");
 
-	var endpoint = "https://monitoryour.website/api/track";
+	var endpoint = "https://linkora.fun/api/analytics/track";
 
 	function generateSessionId() {
 		// Generate a random session ID
