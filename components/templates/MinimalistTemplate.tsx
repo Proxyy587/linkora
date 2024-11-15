@@ -1,24 +1,6 @@
 import React from "react";
 import { IUserData } from "@/lib/models/user.model";
-import {
-	FaBehance,
-	FaDiscord,
-	FaDribbble,
-	FaFacebook,
-	FaLink,
-	FaMedium,
-	FaPinterest,
-	FaReddit,
-	FaSnapchat,
-	FaTelegram,
-	FaTiktok,
-	FaTwitch,
-	FaWhatsapp,
-	FaYoutube,
-} from "react-icons/fa";
-import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
-import { FaXTwitter } from "react-icons/fa6";
-import { InstagramLogoIcon } from "@radix-ui/react-icons";
+
 import { Navbar } from "@/app/[domain]/_components/minimalistic/nav";
 import Footer from "@/app/[domain]/_components/minimalistic/footer";
 import Contact from "@/app/[domain]/_components/minimalistic/contact";

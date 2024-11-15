@@ -28,22 +28,21 @@ export default function SocialLinks({
 	socialLinks,
 	onSocialLinksChange,
 }: SocialLinksProps) {
+	const socials =
+		socialLinks instanceof Map ? Object.fromEntries(socialLinks) : socialLinks;
+
 	const [newPlatform, setNewPlatform] = useState("");
 	const [newUrl, setNewUrl] = useState("");
-	const [links, setLinks] = useState<Record<string, string>>(
-		socialLinks || {}
-	);
-
-	
+	const [links, setLinks] = useState(socials || {});
 
 	useEffect(() => {
-		setLinks(socialLinks || {});
+		setLinks(socials || {});
 	}, [socialLinks]);
 
 	const handleAddLink = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (newPlatform && newUrl) {
-			const updatedLinks = { ...links, [newPlatform.toLowerCase()]: newUrl };
+			const updatedLinks = { ...socials, [newPlatform.toLowerCase()]: newUrl };
 			setLinks(updatedLinks);
 			onSocialLinksChange(updatedLinks);
 			setNewPlatform("");
@@ -52,7 +51,7 @@ export default function SocialLinks({
 	};
 
 	const handleRemoveLink = (platform: string) => {
-		const updatedLinks = { ...links };
+		const updatedLinks = { ...socials };
 		delete updatedLinks[platform];
 		setLinks(updatedLinks);
 		onSocialLinksChange(updatedLinks);
@@ -76,20 +75,20 @@ export default function SocialLinks({
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{Object.entries(links).length > 0 ? (
-							Object.entries(links).map(([platform, url]) => (
+						{socials && Object.keys(socials).length > 0 ? (
+							Object.entries(socials).map(([platform, url]) => (
 								<TableRow key={platform}>
 									<TableCell className="font-medium capitalize">
 										{platform}
 									</TableCell>
 									<TableCell className="text-muted-foreground">
 										<a
-											href={url}
+											href={url as string}
 											target="_blank"
 											rel="noopener noreferrer"
 											className="hover:underline"
 										>
-											{url}
+											{url as string}
 										</a>
 									</TableCell>
 									<TableCell className="text-right">

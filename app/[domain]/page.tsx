@@ -28,7 +28,6 @@ export default async function DomainPage({ params }: DomainPageProps) {
 		socialLinks: {},
 	};
 
-	// Merge the fetched user data with the default user object
 	const fullUser: IUserData = { ...defaultUser, ...user };
 	console.log(fullUser);
 

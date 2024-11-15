@@ -19,6 +19,7 @@ export default function ProfileAndSocials() {
 	const { user, isLoaded } = useUser();
 	const [userInfo, setUserInfo] = useState<IUserData | null>(null);
 	const [isSaving, setIsSaving] = useState(false);
+	console.log(`userInfo: ${JSON.stringify(userInfo)}`);
 
 	useEffect(() => {
 		const fetchUserData = async () => {
@@ -43,13 +44,13 @@ export default function ProfileAndSocials() {
 							templateTheme: userData.templateTheme || "minimalistic",
 							socialLinks: userData.socialLinks || {},
 							image: userData.image || user?.imageUrl || "",
-							education: [],
-							experience: [],
-							personality: [],
-							position: "",
-							profile_links: [],
-							projects: [],
-							technological_skills: null,
+							education: userData.education || [],
+							experience: userData.experience || [],
+							personality: userData.personality || [],
+							position: userData.position || "",
+							profile_links: userData.profile_links || [],
+							projects: userData.projects || [],
+							technological_skills: userData.technological_skills || null,
 						});
 					}
 				} catch (error) {
@@ -65,6 +66,7 @@ export default function ProfileAndSocials() {
 						templateTheme: "minimalistic",
 						image: user.imageUrl || "",
 						technological_skills: null,
+						socialLinks: {},
 					});
 				}
 			}
