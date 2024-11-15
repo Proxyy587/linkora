@@ -52,7 +52,7 @@ export default function DashboardMain() {
       });
 
       const response = await fetch(
-        `/api/analytics/dashboard?${queryParams}`,
+        `/api/analytics/event?${queryParams}`,
         {
           headers: {
             "Content-Type": "application/json",
