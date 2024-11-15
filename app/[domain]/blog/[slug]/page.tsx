@@ -47,19 +47,25 @@ const BlogPage = async ({
 						case 1:
 							return (
 								<h1 key={index} className="text-3xl font-bold my-4">
-									{node.content?.map((textNode: any, i: number) => textNode.text).join("")}
+									{node.content
+										?.map((textNode: any, i: number) => textNode.text)
+										.join("")}
 								</h1>
 							);
 						case 2:
 							return (
 								<h2 key={index} className="text-2xl font-bold my-4">
-									{node.content?.map((textNode: any, i: number) => textNode.text).join("")}
+									{node.content
+										?.map((textNode: any, i: number) => textNode.text)
+										.join("")}
 								</h2>
 							);
 						case 3:
 							return (
 								<h3 key={index} className="text-xl font-bold my-4">
-									{node.content?.map((textNode: any, i: number) => textNode.text).join("")}
+									{node.content
+										?.map((textNode: any, i: number) => textNode.text)
+										.join("")}
 								</h3>
 							);
 						default:
@@ -85,7 +91,9 @@ const BlogPage = async ({
 							{node.content?.map((listItem: any, i: number) => (
 								<li key={i}>
 									{listItem.content?.map((pNode: any, j: number) =>
-										pNode.content?.map((textNode: any, k: number) => textNode.text).join("")
+										pNode.content
+											?.map((textNode: any, k: number) => textNode.text)
+											.join("")
 									)}
 								</li>
 							))}
@@ -97,7 +105,9 @@ const BlogPage = async ({
 							{node.content?.map((listItem: any, i: number) => (
 								<li key={i}>
 									{listItem.content?.map((pNode: any, j: number) =>
-										pNode.content?.map((textNode: any, k: number) => textNode.text).join("")
+										pNode.content
+											?.map((textNode: any, k: number) => textNode.text)
+											.join("")
 									)}
 								</li>
 							))}
@@ -121,16 +131,26 @@ const BlogPage = async ({
 					);
 				case "blockquote":
 					return (
-						<blockquote key={index} className="border-l-4 border-gray-300 pl-4 my-4">
+						<blockquote
+							key={index}
+							className="border-l-4 border-gray-300 pl-4 my-4"
+						>
 							{node.content?.map((pNode: any, i: number) =>
-								pNode.content?.map((textNode: any, j: number) => textNode.text).join("")
+								pNode.content
+									?.map((textNode: any, j: number) => textNode.text)
+									.join("")
 							)}
 						</blockquote>
 					);
 				case "codeBlock":
 					return (
-						<pre key={index} className="bg-gray-100 p-4 rounded-lg my-4 overflow-x-auto">
-							<code>{node.content?.map((textNode: any) => textNode.text).join("")}</code>
+						<pre
+							key={index}
+							className="bg-gray-800 p-4 rounded-lg my-4 overflow-x-auto"
+						>
+							<code>
+								{node.content?.map((textNode: any) => textNode.text).join("")}
+							</code>
 						</pre>
 					);
 				case "image":
@@ -155,16 +175,21 @@ const BlogPage = async ({
 					);
 				case "tweet":
 					return (
-						<div key={index} className="my-4">
-							<a 
-								href={`https://twitter.com/x/status/${node.attrs.id}`}
-								target="_blank"
-								rel="noopener noreferrer"
-								className="text-blue-500 hover:underline"
-							>
-								View Tweet
-							</a>
-						</div>
+						<>
+							<blockquote key={index} className="twitter-tweet my-4">
+								<a
+									href={`https://twitter.com/x/status/${node.attrs.id}`}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									HELLO
+								</a>
+							</blockquote>
+							<script
+								async
+								src="https://platform.twitter.com/widgets.js"
+							></script>
+						</>
 					);
 				default:
 					return null;

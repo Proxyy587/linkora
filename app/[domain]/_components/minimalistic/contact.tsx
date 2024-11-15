@@ -1,14 +1,38 @@
 "use client";
 
+import { sendEmail } from "@/actions/sendEmail";
 import React, { useState } from "react";
+import { FaSpinner } from "react-icons/fa";
+import { toast } from "sonner";
 
 const Contact = ({ email }: { email: string }) => {
 	const [name, setName] = useState("");
 	const [message, setMessage] = useState("");
+	const [loading, setLoading] = useState(false);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log(name, message);
+
+		const toEmail = email;
+		const fromEmail = process.env.NODEMAILER_USER!;
+		const subject = "New message from " + name;
+		const text = message;
+
+		try {
+			setLoading(true);
+			const res = await sendEmail(toEmail, fromEmail, subject, text, name);
+			if (res.success) {
+				toast.success("Message sent successfully!");
+				setName("");
+				setMessage("");
+			} else {
+				toast.error("Failed to send message. Please try again.");
+			}
+		} catch (error) {
+			toast.error("Something went wrong. Please try again later.");
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	return (
@@ -20,7 +44,7 @@ const Contact = ({ email }: { email: string }) => {
 					<div className="space-y-2 w-full">
 						<input
 							className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-							placeholder={email}
+							placeholder={`eg: ${email}`}
 							value={name}
 							onChange={(e) => setName(e.target.value)}
 							id="email-input"
@@ -48,8 +72,13 @@ const Contact = ({ email }: { email: string }) => {
 						<button
 							className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 px-4 py-2 w-36 h-8"
 							type="submit"
+							disabled={loading}
 						>
-							Send
+							{loading ? (
+								<FaSpinner className="animate-spin" />
+							) : (
+								"Send"
+							)}
 						</button>
 					</div>
 				</form>

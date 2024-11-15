@@ -6,6 +6,8 @@ import {
 	HelpCircle,
 	LogOut,
 	User,
+	PenOff,
+	Link,
 } from "lucide-react";
 import { FaXTwitter } from "react-icons/fa6";
 import {
@@ -42,7 +44,7 @@ export const dashboardSidebar = [
 		href: "/dashboard/profile",
 	},
 	{
-		label: "Blog Post",
+		label: "Create Blog",
 		icon: FileText,
 		href: "/dashboard/blog",
 	},
@@ -50,6 +52,16 @@ export const dashboardSidebar = [
 		label: "Domain",
 		icon: BarChart,
 		href: "/dashboard/domain",
+	},
+	{
+		label: "Customize",
+		icon: PenOff,
+		href: "/dashboard/customize",
+	},
+	{
+		label: "Links",
+		icon: Link,
+		href: "/dashboard/links",
 	},
 	{
 		label: "Settings",
