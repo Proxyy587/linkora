@@ -30,12 +30,10 @@ export default function SocialLinks({
 }: SocialLinksProps) {
 	const [newPlatform, setNewPlatform] = useState("");
 	const [newUrl, setNewUrl] = useState("");
-	const [links, setLinks] = useState<Record<string, string>>(socialLinks);
-	console.log("socialLinks", socialLinks);
-	console.log("links", links);
+	const [links, setLinks] = useState<Record<string, string>>(socialLinks || {});
 
 	useEffect(() => {
-		setLinks(socialLinks);
+		setLinks(socialLinks || {});
 	}, [socialLinks]);
 
 	const handleAddLink = (e: React.FormEvent) => {
@@ -74,8 +72,8 @@ export default function SocialLinks({
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{links instanceof Map ? (
-							Array.from(links).map(([platform, url]) => (
+						{Object.keys(links).length > 0 ? (
+							Object.entries(links).map(([platform, url]) => (
 								<TableRow key={platform}>
 									<TableCell className="font-medium">{platform}</TableCell>
 									<TableCell className="text-muted-foreground">{url}</TableCell>

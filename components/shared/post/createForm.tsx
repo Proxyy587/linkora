@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -231,10 +231,23 @@ export default function BlogPostForm({ post, mode }: BlogPostFormProps) {
 					</div>
 					<div className="space-y-2">
 						<Label htmlFor="content">Content</Label>
-						<TailwindAdvancedEditor
-							onChange={setContent}
-							initialContent={content}
-						/>
+						<Suspense
+							fallback={
+								<div className="flex items-center justify-center p-8 border-2 border-dashed rounded-lg">
+									<div className="flex flex-col items-center gap-2">
+										<Loader2 className="h-8 w-8 animate-spin text-primary" />
+										<p className="text-sm text-muted-foreground">
+											Loading editor...
+										</p>
+									</div>
+								</div>
+							}
+						>
+							<TailwindAdvancedEditor
+								onChange={setContent}
+								initialContent={content}
+							/>
+						</Suspense>
 					</div>
 				</form>
 			</CardContent>

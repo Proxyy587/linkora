@@ -23,13 +23,13 @@ const Landing = () => {
 						<Link href="/signup">
 							<Button className="rounded-full">
 								<Link2 className="w-4 h-4 mr-1" />
-								Try Now
+								Register
 							</Button>
 						</Link>
-						<Link href="/learn-more">
+						<Link href="/signin">
 							<Button variant="outline" className="rounded-full">
 								<FileText className="w-4 h-4 mr-1" />
-								Learn More
+								Sign In
 							</Button>
 						</Link>
 					</div>

@@ -1,0 +1,82 @@
+{
+	"about_me": "Hey there! I'm Abhijit Bhattacharjee, a FullStack Web Developer who thrives on crafting innovative web solutions using the MERN stack and TypeScript. As a passionate coder, I enjoy building responsive applications that enhance user experience and I'm always excited for new challenges \ud83c\udf0d. Recently, I developed an online booking system boosting client appointments by 70%! \ud83e\udd16 Let's create something amazing together.",
+	"contact_info": {
+		"email": "abhijitbhattacharjee333@gmail.com",
+		"phone": "+91 6003616607"
+	},
+	"education": [
+		{
+			"dates": "2023 - 2025",
+			"degree": "High School Education",
+			"institution": "Don Bosco Higher Secondary School"
+		}
+	],
+	"experience": [
+		{
+			"company": "Self-Employed",
+			"description": "Developed a responsive website for a cleaning service using React and Next.js. Implemented an online booking system that increased client appointments by 70%.",
+			"duration": "April 2024 - Present",
+			"job_title": "Freelance Web Developer",
+			"skills": "React, Next.js"
+		},
+		{
+			"company": "SVRJS",
+			"description": "Improved site speed and performance by 20% and developed a dynamic website with admin panels using sanity.",
+			"duration": "May 2024 - Present",
+			"job_title": "FullStack Web Developer",
+			"skills": "MERN"
+		},
+		{
+			"company": "Don Bosco Higher Secondary School",
+			"description": "Built and maintained websites codebase for client. Developed a corporate website with a custom CMS for content management.",
+			"duration": "December 2023 - Present",
+			"job_title": "Web Developer Intern",
+			"skills": "CMS"
+		}
+	],
+	"name": "Abhijit Bhattacharjee",
+	"personality": ["male", "innovative"],
+	"position": "652c2795-b877-4166-bd5e-287fd1d9757d",
+	"profile_links": [
+		"www.abhijee.com",
+		"https://www.seguroamigo.app/",
+		"https://aethera.online/",
+		"https://svrjs.vercel.app/",
+		"https://wecleanlimerick.ie/",
+		"https://vugo-8kka.vercel.app/"
+	],
+	"projects": [
+		{
+			"description": "An easy medium to send emails.",
+			"link": null,
+			"outcome": "Facilitated streamlined email communications.",
+			"technologies": "AI/ML, MERN",
+			"title": "Email Service SaaS Application"
+		},
+		{
+			"description": "Corporate website with a custom CMS for content management.",
+			"link": "https://www.seguroamigo.app/",
+			"outcome": "Enhanced content management capabilities.",
+			"technologies": "MERN",
+			"title": "Seguro Amigo Car Insurance Website"
+		},
+		{
+			"description": "Developed dynamic website features with sanity.",
+			"link": "https://wecleanlimerick.ie/",
+			"outcome": "Increased user engagement through improved UI/UX.",
+			"technologies": "MERN",
+			"title": "Dynamic Admin Dashboard and Blog System"
+		},
+		{
+			"description": "Rebranded the website UI for better UX.",
+			"link": "https://vugo-8kka.vercel.app/",
+			"outcome": "Enhanced user experience with modern design.",
+			"technologies": "Next.js 14, Shadcn, MongoDB, TypeScript",
+			"title": "Blog Website Rebranding"
+		}
+	],
+	"resume": "https://aptitudetestsdev.s3.ap-south-1.amazonaws.com/resumes/652c2795-b877-4166-bd5e-287fd1d9757d/AbhijitBhattacharjee_Web_Developer_Resume-1_2024-11-15_2024-11-15.pdf/AbhijitBhattacharjee_Web_Developer_Resume-1_2024-11-15_2024-11-15.pdf",
+	"role": "FullStack Web Developer",
+	"technological_skills": null,
+	"user_id": "abhijitb53"
+}

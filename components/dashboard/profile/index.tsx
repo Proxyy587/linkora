@@ -12,75 +12,59 @@ import ProfileForm from "./ProfileForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { IUserData } from "@/lib/models/user.model";
+import { getUserByEmail } from "@/actions/getUserByEmail";
 
-export interface UserInfo {
-	name: string;
-	username: string;
-	email: string;
-	title?: string;
-	description?: string;
-	status?: string;
-	bio?: string;
-	templateTheme: string;
-	socialLinks: Record<string, string>;
-	profileImage?: string;
-}
-
-export default function EnhancedProfileAndSocials() {
+export default function ProfileAndSocials() {
 	const { user, isLoaded } = useUser();
-	const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+	const [userInfo, setUserInfo] = useState<IUserData | null>(null);
 	const [isSaving, setIsSaving] = useState(false);
 
 	useEffect(() => {
 		const fetchUserData = async () => {
-			if (user?.primaryEmailAddress?.emailAddress) {
+			if (user?.username) {
 				try {
-					const userData = await getUserAndSaveEmail(
-						user.primaryEmailAddress.emailAddress
-					);
+					const userData = await getUserByEmail(user.username);
 					if (userData) {
 						setUserInfo({
-							name: userData.name || user.fullName || "",
-							username: userData.username || user.username || "",
-							email: userData.email || user.primaryEmailAddress.emailAddress,
+							name: userData.name || user?.fullName || "",
+							username: userData.username || user?.username || "",
+							contact: {
+								email:
+									userData.contact?.email ||
+									user?.primaryEmailAddress?.emailAddress ||
+									"",
+								phone: userData.contact?.phone || "",
+							},
 							title: userData.title || "",
 							description: userData.description || "",
 							status: userData.status || "",
 							bio: userData.bio || "",
-							templateTheme: userData.templateTheme || "modern",
+							templateTheme: userData.templateTheme || "minimalistic",
 							socialLinks: userData.socialLinks || {},
-							profileImage: userData.image || user.imageUrl || "",
-						});
-					} else {
-						// If no user data is returned, create a default user info object
-						setUserInfo({
-							name: user.fullName || "",
-							username: user.username || "",
-							email: user.primaryEmailAddress.emailAddress,
-							title: "",
-							description: "",
-							status: "",
-							bio: "",
-							templateTheme: "modern",
-							socialLinks: {},
-							profileImage: user.imageUrl || "",
+							image: userData.image || user?.imageUrl || "",
+							education: [],
+							experience: [],
+							personality: [],
+							position: "",
+							profile_links: [],
+							projects: [],
+							technological_skills: null,
 						});
 					}
 				} catch (error) {
 					console.error("Error fetching user data:", error);
 					toast.error("Failed to load user data. Please try again.");
-					// Set default user info even if there's an error
 					setUserInfo({
 						name: user.fullName || "",
 						username: user.username || "",
-						email: user.primaryEmailAddress.emailAddress,
-						title: "",
-						description: "",
-						status: "",
-						bio: "",
-						templateTheme: "modern",
-						socialLinks: {},
-						profileImage: user.imageUrl || "",
+						contact: {
+							email: user.primaryEmailAddress?.emailAddress || "",
+							phone: "",
+						},
+						templateTheme: "minimalistic",
+						image: user.imageUrl || "",
+						technological_skills: null,
 					});
 				}
 			}
@@ -94,10 +78,7 @@ export default function EnhancedProfileAndSocials() {
 		if (user && userInfo) {
 			setIsSaving(true);
 			try {
-				await saveUserInfo(
-					user.primaryEmailAddress?.emailAddress || "",
-					userInfo
-				);
+				await saveUserInfo(user?.username || "", userInfo);
 
 				if (user.username !== userInfo.username) {
 					await user.update({ username: userInfo.username });
@@ -122,7 +103,7 @@ export default function EnhancedProfileAndSocials() {
 				await user.setProfileImage({ file });
 				const imageUrl = await user.imageUrl;
 				setUserInfo((prevInfo) =>
-					prevInfo ? { ...prevInfo, profileImage: imageUrl } : null
+					prevInfo ? { ...prevInfo, image: imageUrl } : null
 				);
 				toast.success("Profile picture updated successfully");
 			} catch (error) {
@@ -162,7 +143,7 @@ export default function EnhancedProfileAndSocials() {
 							className="cursor-pointer hover:opacity-90"
 						>
 							<Image
-								src={userInfo.profileImage || "/default-avatar.png"}
+								src={userInfo.image || "/default-avatar.png"}
 								alt="Profile"
 								width={120}
 								height={120}
@@ -181,7 +162,7 @@ export default function EnhancedProfileAndSocials() {
 						<div className="text-center">
 							<h2 className="text-xl font-semibold">{userInfo.name}</h2>
 							<p className="text-sm text-muted-foreground mt-1">
-								{userInfo.email}
+								{userInfo.contact?.email}
 							</p>
 							<p className="text-sm text-muted-foreground">
 								@{userInfo.username}
@@ -217,7 +198,7 @@ export default function EnhancedProfileAndSocials() {
 							</TabsContent>
 							<TabsContent value="social">
 								<SocialLinks
-									socialLinks={userInfo.socialLinks}
+									socialLinks={userInfo.socialLinks || {}}
 									onSocialLinksChange={(updatedLinks) => {
 										setUserInfo({
 											...userInfo,

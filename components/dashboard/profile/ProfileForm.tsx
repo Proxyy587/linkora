@@ -9,7 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { UserInfo } from "./index";
+import UserInfo from "./index";
 import {
 	Dialog,
 	DialogContent,
@@ -19,10 +19,11 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { IUserData } from "@/lib/models/user.model";
 
 interface ProfileFormProps {
-	userInfo: UserInfo;
-	setUserInfo: React.Dispatch<React.SetStateAction<UserInfo | null>>;
+	userInfo: IUserData;
+	setUserInfo: React.Dispatch<React.SetStateAction<IUserData | null>>;
 }
 
 export default function ProfileForm({
@@ -33,7 +34,7 @@ export default function ProfileForm({
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 	) => {
 		const { name, value } = e.target;
-		setUserInfo((prev: UserInfo | null) =>
+		setUserInfo((prev: IUserData | null) =>
 			prev ? { ...prev, [name]: value } : null
 		);
 	};

@@ -9,9 +9,9 @@ import {
 import Image from "next/image";
 
 const SITE_TEMPLATES = [
+	{ name: "minimalist", imagePath: "/development/3.jpg" },
 	{ name: "modern", imagePath: "/development/1.jpg" },
 	{ name: "classic", imagePath: "/development/2.jpg" },
-	{ name: "minimalist", imagePath: "/development/3.jpg" },
 ];
 
 interface TemplateSelectionProps {

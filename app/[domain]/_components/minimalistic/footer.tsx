@@ -23,7 +23,7 @@ export default function Footer() {
 		{ href: "/rss", label: "RSS" },
 		{ href: "https://github.com/vercel/next.js", label: "GitHub" },
 		{
-			href: "https://vercel.com/templates/next.js/portfolio-starter-kit",
+			href: "https://linkora.fun",
 			label: "View Source",
 		},
 	];

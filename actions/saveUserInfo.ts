@@ -5,25 +5,38 @@ import User from "@/lib/models/user.model";
 import { IUserData } from "@/lib/models/user.model";
 
 export async function saveUserInfo(
-	email: string,
-	userInfo: Partial<IUserData>
-) {
+	username: string,
+	userInfo: IUserData
+): Promise<IUserData> {
 	try {
 		await connectToDB();
 
 		const updatedUser = await User.findOneAndUpdate(
-			{ email },
+			{ username },
 			{
 				$set: {
 					name: userInfo.name,
 					username: userInfo.username,
-					email: userInfo.email,
+					contact: {
+						email: userInfo.contact?.email || "",
+						phone: userInfo.contact?.phone || "",
+					},
 					title: userInfo.title,
 					description: userInfo.description,
 					status: userInfo.status,
 					bio: userInfo.bio,
 					templateTheme: userInfo.templateTheme,
 					socialLinks: userInfo.socialLinks,
+					education: userInfo.education,
+					experience: userInfo.experience,
+					personality: userInfo.personality,
+					position: userInfo.position,
+					profile_links: userInfo.profile_links,
+					projects: userInfo.projects,
+					image: userInfo.image,
+					resume: userInfo.resume,
+					role: userInfo.role,
+					technological_skills: userInfo.technological_skills,
 				},
 			},
 			{ new: true, upsert: true }

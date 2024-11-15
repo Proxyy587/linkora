@@ -17,19 +17,21 @@ export default async function DomainPage({ params }: DomainPageProps) {
 		notFound();
 	}
 
-	// Create a default user object with all required fields
 	const defaultUser: IUserData = {
 		name: "",
 		username: "",
-		email: "",
-		templateTheme: "modern",
+		contact: {
+			email: "",
+			phone: "",
+		},
+		templateTheme: "minimalist",
 		socialLinks: {},
 	};
 
 	// Merge the fetched user data with the default user object
 	const fullUser: IUserData = { ...defaultUser, ...user };
 	console.log(fullUser);
-	
+
 	const renderTemplate = () => {
 		switch (fullUser.templateTheme) {
 			case "modern":

@@ -30,7 +30,6 @@ interface MinimalistTemplateProps {
 }
 
 const MinimalistTemplate: React.FC<MinimalistTemplateProps> = ({ user }) => {
-	// Ensure 'socials' is an object by converting the Map if needed
 	const socials =
 		user.socialLinks instanceof Map
 			? Object.fromEntries(user.socialLinks)
@@ -59,12 +58,10 @@ const MinimalistTemplate: React.FC<MinimalistTemplateProps> = ({ user }) => {
 					<p className="text-gray-700 dark:text-gray-300">{user.bio}</p>
 					<p className="text-gray-700 dark:text-gray-300">{user.description}</p>
 				</section>
-				<section className="my-8">
-					<BlogPosts username={user.username} limit={3} />
-				</section>
+
 				{socials && Object.keys(socials).length > 0 && (
 					<section>
-						<h2 className="text-xl font-semibold mb-2">Connect</h2>
+						<h2 className="text-xl font-semibold mb-2">Socials</h2>
 						<ul className="flex space-x-4">
 							{Object.entries(socials).map(([platform, url]) => (
 								<li key={platform}>
@@ -82,9 +79,13 @@ const MinimalistTemplate: React.FC<MinimalistTemplateProps> = ({ user }) => {
 						</ul>
 					</section>
 				)}
+				<section className="my-8">
+					<h2 className="text-xl font-semibold mb-2">Recent Post</h2>
+					<BlogPosts username={user.username} limit={3} />
+				</section>
 				<section>
 					<h2 className="text-xl font-semibold mb-2">Contact</h2>
-					<Contact email={user.email} />
+					{user.contact && <Contact email={user.contact.email} />}
 				</section>
 			</main>
 			<Footer />

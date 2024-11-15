@@ -12,7 +12,7 @@ export function Navbar() {
 			<ul className="flex space-x-6">
 				{Object.entries(navItems).map(([path, { name }]) => (
 					<li key={path}>
-						<Link href={path}>
+						<Link href={path} legacyBehavior>
 							<a className="hover:text-primary transition-colors duration-200">
 								{name}
 							</a>
